@@ -1,0 +1,244 @@
+---
+title: "R"
+author: "K21161165"
+date: '2023-01-09'
+output:
+  word_document: default
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+---
+
+## Abstract
+With the rapid development of video game field, new generation of people are used to playing video games. In the new period of web 4.0, metaverse is a hot concept highly related to video games. This means video game field is a promising field in the future. By discussing briefly the history of video games, this project aims to see the relationship between genres and sales revenues of games, which indicates what kinds of games are most popular. Firstly, the project proven that the number of games is increasing by year. Secondly, the project analysis the number of games released by each genre and number of sales by each genre, to better understand which genres are of most popularity. Thirdly, more attention are paid to top-selling game genres in famous game publishers, and best selling ten games are from which categories. Finally, selling trends of games by genres are analyzed.
+
+
+## Introduction
+Unlike twenty or thirty years ago, video games have became a common part in our lives, together with other digital devices. It can be said that with the development of technology and AI, video games fields have better prospects and markets in the future. In the new era of big data and Industry 4.0, artificial intelligence (AI) is one of the main forces driving industrial progress and a key factor in important technologies like blockchain, cloud , computing, and the Internet of Things. (Lu Yang, 2019) Metaverse is a concept attracted people's attention, and is believed to be highly related to game fields. The modern Metaverse includes social, immersive VR systems that work with open game worlds, massively multi-player online games, and AR collaborative environments. (Mystakidis S,2022) Since video game fields is a promising area, this project provide an analysis back to the history. To see what is the trending of sales of video games from past to now, and what genres of games is of most popularity. As well as provide some advice to marketing of game companies.
+Based on this analysis, action games and sports games deserve more emphasis than other kinds of games.
+## Background / literature review
+
+The history of video games can be traced back to 1950s and 1960s, where simple games and stimulation were invented by scientists (wiki) Most of these games were like video games, until 1962, until a group of students created the two-player spaceship shooting game Spacewar!, which was a great improvement. The next trend is coin inserted machine. In 1971, the first mass-produced coin-operated arcade video game was released. A microprocessor (Intel's 8080) was used for the first time in Gun Fight, the first commercial arcade video game, which was launched by Midway in 1975. After that, games were evolving to be suitable for playing at home. In 1975, with the development of personal computer, programming and playing games started to be popular among game lovers. Different types of games started to appear, such as text-based adventures (interact with computers by inputting commands to complete missions), graphical adventure games, role-playing games. Many famous game companies well-known by us started to emerge, such as Nintendo, Sega and Xbox. Then a new evolution begun, the massive multiplayer online game (MMOG) gained significance with the Internet's expanding popularity and accessibility. Nowadays, one of the most popular kinds of games are portable games, which can be played on phones or pads. (Saucier, Jeremy K, 2022)
+
+Since the previous few decades, popularity in video games has grown and maintained.In general, video games are significant due to their appeal and suspense and the prevalence of these games in homes and entertainment venues. (Mohamed M, NedaaS.I, 2018) Unlike in the past, video games have become an inevitable part of people's lives, we can see them almost everywhere on digital devices. Not surprisingly, there are various genres of games. Entertainment is the same purpose of all games, while different genres of games have such various kinds of strategies, so sometimes it is rather hard to make general claims.(Caldwell,N.,2014)
+According to Alaa A.'s analysis(2020), the six most popular genres of games are adventure, RPG, shooter, platform, puzzle, and strategy from 1986 to 2019. The analysis was based on 100 succeeded games represented 16 game genres. 
+
+## Game genre mentioned in this essay
+Action:a kind of video games that focus on physical challenges()
+Fighting: a sub-genre of action, involves combat between two or more players()
+Adventure: a type of video game where the user takes on the role of the main character in an interactive tale propelled by exploration or puzzle-solving
+Misc: music or video games referred in the dataset()
+Platform: a sub-genre of action, where moving the player character between locations in the gaming world is the primary goal()
+Racing: which the player participates in a racing competition()
+Role-Playing: a game where participants take on the roles of characters in a made-up world()
+Shooter: a sub-genre of action, where the primary objective is to defeat the opponent characters with the player's available weapons()
+Simulation: a kind of game built to closely mimic everyday activities
+Sports: a kind of game simulates the practice of sports()
+Strategy: a kind of game in which the outcome is highly influenced by the players' free, often autonomous, decision-making abilities()
+
+## Research question and method
+
+Since video games have been more and more popular these years, this report aims to provide an analysis in depth in video games field. To see which genres are the most popular, and famous game publishers prefer to produce what types of games. As providing a thorough picture of video games trending, this project can be useful for marketing people and game companies to see what genres of games is getting popular by year and how to raise sales revenue of video games. Moreover, this project can also be helpful to prediction of gaming tends.
+#Data prepration and data frame
+For this project, the Video Games Sales Dataset(1980-2020) is from [Kaggle](https://www.kaggle.com/datasets/sidtwr/videogames-sales-dataset). The data was collected from Metacritic, which is a platform containing various kinds of streaming media including video games. Through its scoring system, Metacritic assigns a percentage to each review, either based on the grade assigned or what the website determines based on a qualitative evaluation.（wiki)
+
+The dataset is opened to the public on Kaggle.com, and is free to downloads.
+
+The dataset used called Video Games Sales Dataset contains 16716 observations of 16 variables, from year 1980 to year 2020. However, due to lack of data between 2017 to 2020, analysis of this dataset will mainly focus from year 1980 to year 2016. There are variables such as Name of games, genre, publisher and sales from different regions. Critic score means aggregate score compiled by Metacritic staff. Critic count means the number of critics used in coming up with the critic score. User score means score by Metacritic's subscribers. User count means number of users who gave the user score. Developer means party responsible for creating the game. Moreover, not all 16716 variables have these variables,the number of completed cases is 6900. Another limitation of this dataset is that Metacritic only contains a subset of the platforms, so there are missing observations.
+
+For data preparation, the dataset was imported and renamed as games_sales. There are two N/A data in the original dataset of Year_of_Release column, so as.numeric function is used to convert data type from character to integer, and N/A data was removed manually. Data types and data information can be seen as below.
+```{r message=FALSE, warning=FALSE}
+games_sales<- read.csv('R/final project/Video_Games_Sales_as_at_22_Dec_2016.csv')
+str(games_sales)
+games_sales$Year_of_Release <- as.numeric(games_sales$Year_of_Release)
+summary(games_sales)
+str(games_sales$Year_of_Release)
+```
+
+
+## Analysis part 1-correlation
+Firstly, to see if user scores or critic scores will affect number of sales, which is to see whether scores on Metacritic will have effect on popularity. Another thing is that whether there are correlations between sales of different regions.
+```{r message=FALSE, warning=FALSE}
+games_sales_cor<-na.omit(games_sales)
+cor(games_sales_cor[,c("NA_Sales", "EU_Sales", "Other_Sales", "Global_Sales","Critic_Score","User_Score")], method = "spearman")
+```
+Based on the above table, no strong correlations can be seen between number of sales and scores, this is to say scores on Metacritic will have no impact on popularity of games. However, there are positive linear relationship between number of sales of different regions. The higher sales revenue in one place, the higher it will be in other places as well. The likely situation can be when a kind of game is selling good in one region, it earns reputation on the internet. So people in other places also will buy this game.
+##Analysis part 2-cumulative number of games released over year
+Using library dplyr, based on number of games released and year, a line graph is created to indicate the trend of games released from 1980 to 2016. The number of games released by each year, was calculated using function cumsum(), which is to calculate the cumulative sum of games released grouped by year. Overall, a clear trend of increasing can be seen in this line graph. From 1980 to 2016, the number of games released grows year by year. Moreover, the number seen a rapid increase from 1994. This means video is getting more and more popular by each year, which is consistent with most people's thoughts.
+```{r message=FALSE, warning=FALSE, fig.height=7, fig.width=10}
+#To see the number of games released by year
+library(dplyr)
+games_sales_df<- games_sales %>%
+  group_by(Year_of_Release) %>%
+  tally()
+games_sales_df
+library(ggplot2)
+ggplot(games_sales_df,aes(Year_of_Release, cumsum(n)))+
+  geom_line(color="red")+
+  labs(x="Year",y="number of games released",title="Num of games released per year",subtitle = "from 1984 to 2016")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_continuous(breaks = seq(1980,2020,2))+
+  theme(plot.title = element_text(size=20,hjust = 0.5),
+        plot.subtitle = element_text(size=20,hjust = 0.5),
+        panel.grid = element_blank())+
+  theme(axis.text.y = element_text(size = 20),
+        axis.text.x = element_text(size = 20))+
+  theme(axis.title = element_text(size = 20))
+
+```
+
+##Analysis part 3
+The analysis is to see what kinds of games are released with the largest number. Using tidyr package, the dataset was filleted from 1980 to 2016, any na from Genre column was removed. Total number of games released by each genre from 1980 to 2016 can be seen in below histogram. 
+From the histogram, we can see that over 3000 action games ware released, which is six times more than puzzle games. The second most is sports games, which is only one hundred less than the number of action games. The top 3 most released games genres are action, sports and mics, while the least released games genres are puzzle, strategy and fighting. It can't be proven to have a clear relationship between number of games released and popularity. However, more games released in certain genre such as action, it is more likely this kind of games have more market than others. Thus, action, sports and mics are games that companies would like to produce.
+```{r message=FALSE, warning=FALSE, fig.height=10, fig.width=10}
+#To see the number of games by genre
+library(tidyr)
+head(games_sales)
+Genre_df <- games_sales %>% filter(Year_of_Release %in% 1980:2016) %>% drop_na(Genre) %>% group_by(Genre) %>% tally() 
+Genre_df <- Genre_df %>% filter(Genre != "") 
+Genre_df
+ggplot(Genre_df, aes(x = n, y = reorder(Genre, n))) + 
+  geom_col(fill = "#3CB371", color = "black") + 
+  geom_label(aes(label = n), hjust = -0.1,size=5) + 
+  labs(x = "Number", y = "Genre",title="Num of games by each genre",subtitle = "from 1984 to 2016")+
+  scale_x_continuous(limit=c(0,5000))+
+  theme(text = element_text(size = 20))+
+   theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+##Analysis part 4
+The number of sales can be regarded as another indicator of popularity. The more popular the game is, more people will purchase it. Thus, a histogram is created to show total sales of different game genre, as well as the amount of each region can be seen on the graph.
+A new dataset was created selecting genre and sales revenue from games_sales, summarizing total revenue of sales according to genre. Then melt function is used to reshape the dataframe and to make genre an id. Also ggplot package is used to create the graph.
+Action games,sports games and shooter games are the most best-selling kinds of games from 1980 to 2016. However, shooter games is not selling good in Japan, while role playing games is popular among Japanese. The sales revenue of strategy, adventure and puzzle was relatively low comparing to other categories. Generally, North America contributes a higher amount of sales comparing to other regions.
+```{r, fig.height=7, fig.width=10}
+#To see the number of sales by region
+region_genre_df <- games_sales %>%
+  select(Genre,NA_Sales,EU_Sales,JP_Sales,Other_Sales)%>%
+  filter(Genre!="")%>%
+  group_by(Genre)%>%
+  summarise(North_America=sum(NA_Sales),
+            Europe=sum(EU_Sales),
+            Japan=sum(JP_Sales),
+            Others=sum(Other_Sales))
+
+library(reshape2)
+region_genre<- region_genre_df %>%
+  melt(id.vars="Genre")
+region_genre
+
+ggplot(region_genre,aes(y=reorder(Genre,value),x=value,fill=variable))+
+  geom_col(width = 0.6,color="black")+
+  labs(x="sales",y="genre",fill="Region",size=10,title = "Number of sales by each regions", subtitle = "from 1980 to 2016")+
+  geom_label(aes(label=after_stat(x),group=Genre,size=10),stat="summary",fun=sum,hjust=-0.1,show.legend = FALSE,size=5)+
+  scale_x_continuous(limits=c(0,2400))+
+  theme(text = element_text(size = 20))+
+   theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5))
+  
+
+```
+
+##Analysis part 5
+To see what the best selling kinds of games in each companies are, the following histogram describing number of sales for top five publisher breakdown is created. Still filter the dataset according to publishers and genres this time, using ggplot function to create the graph. Facet_wrap function is used to divided the histogram into separate publishers. The five publishers are Activision, Electronic Arts, Sony Computer Entertainment, Nintendo and Ubisoft, which are all well-known companies in video games field.
+Different game companies seem to have their own best-selling genre of games. Shooter is the best-selling genre for Activision, and sports is number one selling in Nintendo, which their sales revenue is almost three times of the second category. Sony Computer Entertainment earns its games selling revenue mostly from Racing games, while Ubisoft earns from Misc games. Although Electronic Arts is more well-rounded comparing to other companies. Sports, stimulation, shooter and action are all selling good in their company.
+```{r, fig.height=7, fig.width=10}
+# The number of sales of Top 5 Publisher breakdown by genre
+genre_publisher_df <- games_sales %>%
+  select(Genre,Global_Sales,Publisher) %>%
+  filter(Publisher %in% c('Nintendo','Electronic Arts','Activision','Sony Computer Entertainment','Ubisoft')) %>%
+  group_by(Publisher,Genre) %>%
+  arrange(desc(Global_Sales))
+
+ggplot(genre_publisher_df,aes(Genre,Global_Sales,fill=Genre))+
+  geom_col(width=0.4,position=position_dodge(width=0.5))+
+  facet_wrap(~Publisher,nrow=3,ncol=2,scales="free")+
+  coord_flip()+
+  theme(axis.text.y = element_text(size = 5))+
+  labs(x="Genre",y="Number of Sales(Million)",title="Number of Sales for Top 5 Publisher Breakdown by Genre",
+       subtitle = "from 1980 to 2016")+
+  theme(text = element_text(size = 20))+
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5))+
+  theme(axis.text.y = element_text(size = 10))
+```
+##Analysis part 6
+To analysis the most best-selling ten games are from which genre, the global sales number is ranked by a decreasing order and attribute to top_10 dataset. According to the table, top ten best-selling games are all from Nintendo. Thus, further analysis focus on sales revenue of Nintendo.
+The overall best-selling game is a sport game called Wii Sports, its sales revenue was two times more than the second one Super Mario Bros. Sports games contribute to two games from the top ten games, which is consistent with former analysis as sports games sell best in Nintendo. Platform games are also frequently appeared in top ten games. While other categories such as racing, shooter, Mics and puzzle only appeared once.
+```{r, fig.height=7, fig.width=10}
+#Top 10 selling games by Nintendo
+top_10_df<-games_sales %>%
+  select(Name,Publisher,Global_Sales,Genre)
+top_10_df <- top_10_df[order(top_10_df$Global_Sales,decreasing=TRUE),]
+top_10<-head(top_10_df,10)
+top_10
+##                         Name Publisher Global_Sales        Genre
+## 1                 Wii Sports  Nintendo        82.53       Sports
+## 2          Super Mario Bros.  Nintendo        40.24     Platform
+## 3             Mario Kart Wii  Nintendo        35.52       Racing
+## 4          Wii Sports Resort  Nintendo        32.77       Sports
+## 5   Pokemon Red/Pokemon Blue  Nintendo        31.37 Role-Playing
+## 6                     Tetris  Nintendo        30.26       Puzzle
+## 7      New Super Mario Bros.  Nintendo        29.80     Platform
+## 8                   Wii Play  Nintendo        28.92         Misc
+## 9  New Super Mario Bros. Wii  Nintendo        28.32     Platform
+## 10                 Duck Hunt  Nintendo        28.31      Shooter
+ggplot(top_10,aes(Global_Sales,reorder(Name,Global_Sales)))+
+  geom_col(fill="pink",col="black")+
+  labs(x="Number of Global Sales(Million)",y="Games Name",title="Top 10 Selling Games of Nintendo",subtitle ="from 1980 to 2016")+
+  geom_label(aes(label = Global_Sales), hjust = -0.1,size=5)+
+  scale_x_continuous(limits=c(0,100))+
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5))+
+  theme(text = element_text(size = 20))+
+  theme(axis.title = element_text(hjust=0.5))
+
+```
+##Analysis part 7
+The analysis is to see the trending of sales by each game genres from 1980 to 2016. To fulfill this requirement, package dplyr is used as usual, then creating a new dataframe called genre_trend, which select column Genre, Year_of_Release and Global_Sales, omitting NA in Genre and filtering by Genre. After these steps, using ggplot to create histograms which x equals year and y equals sales revenues. Then facet_wrap is used to create twelve graphs by each genres. Finally, theme function is used to adjust font size and format.
+Before year 2000, game genres of adventure, platform, puzzle, role-playing, shooter and strategy were popular. However, through time passing, action, fighting, misc, racing, stimulation and sports games became more popular. It can also be seen that each genre has its booming age, year from 2000 to 2012 is a booming time for most games.
+```{r, fig.height=8, fig.width=10}
+#Number of sales by genre each year
+library(dplyr)
+genre_trend <- games_sales %>%
+  select(Genre,Year_of_Release,Global_Sales)%>%
+  filter(Genre!="")%>%
+  group_by(Genre)
+genre_trend
+## # A tibble: 16,715 × 3
+## # Groups:   Genre [12]
+##    Genre        Year_of_Release Global_Sales
+##    <chr>                  <dbl>        <dbl>
+##  1 Sports                  2006         82.5
+##  2 Platform                1985         40.2
+##  3 Racing                  2008         35.5
+##  4 Sports                  2009         32.8
+##  5 Role-Playing            1996         31.4
+##  6 Puzzle                  1989         30.3
+##  7 Platform                2006         29.8
+##  8 Misc                    2006         28.9
+##  9 Platform                2009         28.3
+## 10 Shooter                 1984         28.3
+## # … with 16,705 more rows
+ggplot(genre_trend,aes(Year_of_Release,Global_Sales,fill=Genre))+
+  geom_col(width = 0.4,position=position_dodge(width=0.5))+
+  facet_wrap(~Genre,nrow=6,ncol=6,scales="free_x")+
+  scale_x_continuous(breaks = seq(1980,2016,4))+
+  labs(x="Year",y="Number of global sales(M)",
+       title="Num of sales by genre each year",
+       subtitle = "from 1980 to 2016")+
+  theme(text=element_text(size=15))+
+  theme(axis.text.x = element_text(size = 8))+
+  scale_y_continuous(expand=c(0,0))+
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.text = element_text(size = 18))
+
+```
+
+
+## Conclusion
+According to the analysis of this project, video games are getting more and more popular from 1980 to 2020, with a rapid growth from 1994. This conclusion is consistent with the prevailing view of public. By looking at the number of genres released from 1980 to 2020, three genres released most are action, sports and misc. Moreover, when it comes to number of sales grouped by genre, genres of most popularity are action, sports and shooting. 
+Apart from above, the analysis also take a look at game publisher. By filtering the sales revenue of top five game publishers, it is found that each well-known publisher has its own represented genre, except for Electronic Arts, which is more well-rounded. Moreover, when we focus on ten top selling games, they are all from Nintendo. And Nintendo's representative game is sports game. From top ten selling games of Nintendo, Wii sports ranks first. Games genres such as action,fighting,misc,racing,simulation and sports are getting more prevalent after year 2000.
+From the analysis of this project, it can be said that action games and sports games are the two best-selling and most popular genres. For marketing of game companies, more emphasis can be laid on these two types. As for future trends of video games field, such as metaverse, action games and sports games worth more attentions than other genres.
